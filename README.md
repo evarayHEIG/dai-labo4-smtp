@@ -14,6 +14,16 @@ classDiagram
     class FileManager {
         +String[] getVictims()
         +int getNbGroup()
+        +ArrayList<String> getMessage()
+    }
+    
+    class Message {
+        -String subject
+        -String body
+        +String getSubject()
+        +String getBody()
+        +void setSubject(String subject)
+        +void setBody(String body)
     }
     
     class Client {
@@ -31,5 +41,6 @@ classDiagram
         +String createMailSMTP()
     }
 
+    FileManager <--- Message : contains
 
 ```
