@@ -12,7 +12,7 @@ title: SMTP
 classDiagram
     
     class FileManager {
-        +String[] getVictims()
+        +ArrayList<String> getVictims()
         +int getNbGroup()
         +ArrayList<String> getMessage()
     }
