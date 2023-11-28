@@ -1,0 +1,26 @@
+[
+  {
+    "message": {
+      "subject": "Avez-vous entendu parler de notre Seigneur Jésus-Christ ?",
+      "body": "Cher {nom}, Nous vous invitons à la paroisse Saint-Seins pour apprendre sur notre Seigneur JC et nous donner votre argent hehehe."
+    }
+  },
+  {
+    "message": {
+      "subject": "Prank hihi",
+      "body": "That's a prank bwahahahahaha"
+    }
+  },
+  {
+    "message": {
+      "subject": "You are now a millionaire",
+      "body": "Congratulations! You just won a million dollars!"
+    }
+  },
+  {
+    "message": {
+      "subject": "Sorry for your loss",
+      "body": "I am sorry to inform you that your mother just died :(. Good luck."
+    }
+  }
+]

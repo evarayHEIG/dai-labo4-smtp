@@ -81,7 +81,7 @@ public class FileManager {
     }
 
     public static void main(String... args) {
-        System.out.println("Hello");
+
         String currentDirectory = FileManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         System.out.println("The current working directory is " + currentDirectory);
         //String address = "/C:/Users/rafae/Desktop/Cours%20HEIG-VD/semestre%203/DAI/Labo/dai-labo4-smtp/code/Rafou2898_evarayHEIG/Client/config/address.utf8";
