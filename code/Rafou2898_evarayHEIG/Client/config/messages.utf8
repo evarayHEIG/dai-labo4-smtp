@@ -22,5 +22,66 @@
       "subject": "Sorry for your loss",
       "body": "I am sorry to inform you that your mother just died :(. Good luck."
     }
-  }
+  },
+  {
+      "message": {
+        "subject": "Offre spéciale de révélation divine !",
+        "body": "Chère {nom}, notre congrégation vous invite à rejoindre notre cercle exclusif pour connaître les secrets divins. Envoyez-nous votre argent pour la bénédiction ultime."
+      }
+    },
+    {
+      "message": {
+        "subject": "Félicitations, vous avez été sélectionné pour une farce spéciale !",
+        "body": "Ceci est une farce spéciale ! Répondez 'HAHA' pour participer à notre concours farceur et gagnez des rires éternels."
+      }
+    },
+    {
+      "message": {
+        "subject": "Notification de gain imminent",
+        "body": "Félicitations ! Vous avez été sélectionné comme l'heureux gagnant d'un voyage intergalactique. Réclamez votre prix maintenant !"
+      }
+    },
+    {
+      "message": {
+        "subject": "Urgent : Décès d'un proche",
+        "body": "Nous avons des nouvelles importantes concernant un membre de votre famille. Cliquez pour en savoir plus. (c'est une farce)"
+      }
+    },
+    {
+      "message": {
+        "subject": "Opportunité d'héritage inattendue",
+        "body": "Un parent éloigné vous a légué une fortune ! Pour réclamer votre héritage, veuillez nous fournir vos informations personnelles."
+      }
+    },
+    {
+      "message": {
+        "subject": "Votre chance est arrivée !",
+        "body": "Vous êtes le millionième visiteur de notre site ! Réclamez votre prix maintenant en nous envoyant vos coordonnées personnelles."
+      }
+    },
+    {
+      "message": {
+        "subject": "Erreur de livraison de colis",
+        "body": "Votre colis est bloqué en attente de paiement pour la livraison. Veuillez cliquer pour régler les frais de livraison."
+      }
+    },
+    {
+      "message": {
+        "subject": "Votre compte est bloqué",
+        "body": "Nous avons détecté une activité suspecte sur votre compte. Connectez-vous pour résoudre ce problème."
+      }
+    },
+    {
+      "message": {
+        "subject": "Vous avez été filmé !",
+        "body": "Nous avons des vidéos compromettantes de vous. Payez une rançon pour les supprimer."
+      }
+    },
+    {
+      "message": {
+        "subject": "Demande d'aide urgente",
+        "body": "Je suis coincé à l'étranger et j'ai besoin d'argent pour rentrer chez moi. Veuillez m'aider en envoyant des fonds."
+      }
+    }
+
 ]
