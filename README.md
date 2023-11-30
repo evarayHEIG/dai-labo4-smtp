@@ -38,7 +38,7 @@ classDiagram
     }
     
     class MailGroup {
-        #createGroup(int groupSize)
+        #ArrayList<String> createGroup(int groupSize, ArrayList<String> victims)
     }
     
     class MailContent {
