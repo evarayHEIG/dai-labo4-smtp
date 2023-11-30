@@ -28,7 +28,7 @@ public class FileManager {
             String currentVictim;
 
             while ((currentVictim = reader.readLine()) != null) {
-                System.out.println(currentVictim);
+
                 victims.add(currentVictim);
             }
 
@@ -57,15 +57,16 @@ public class FileManager {
 
 
             while ((currentMessage = reader.readLine()) != null) {
-                // System.out.println(currentMessage);
+
                 if (currentMessage.contains("subject") ) {
                     String[] split = currentMessage.split("\"subject\":");
+
                     temp[0] = split[1];
 
                 } else if (currentMessage.contains("body")) {
                     String[] split = currentMessage.split("\"body\":");
                     temp[1] = split[1];
-                    messagesContent.add(new Message(temp[0], temp[1]));
+                    messagesContent.add(new Message(temp[0].replaceAll("^ \"|\",",""), temp[1].replace("\"","")));
 
                 }
 

@@ -2,6 +2,8 @@ package ch.heig.dai.lab.smtp;
 
 import javax.mail.internet.MimeUtility;
 import java.io.UnsupportedEncodingException;
+import java.util.Base64;
+import java.util.List;
 
 public class MailContent {
 
@@ -29,23 +31,45 @@ public class MailContent {
     /**
      * Used to send the mail to the victim
      * @param victim the victim's mail
-     * @param RCPT_TP true if you want to send RECTP TO or false if you want to send to
+     * @param RCPT_TO true if you want to send RECTP TO or false if you want to send to
      * @return the string to send to the server
      */
-    String mailTo(String victim, boolean RCPT_TP){
-        return RCPT_TP ? "RCPT TO: <" + victim + ">" : "To: " + victim ;
+    String mailTo(List<String> victim, boolean RCPT_TO){
+
+        if(victim.isEmpty()){
+            throw new IllegalArgumentException("The list of victims is empty");
+        }
+
+        StringBuilder victims = new StringBuilder();
+
+       if(RCPT_TO){
+
+        for(String victimMail : victim ){
+            victims.append("RCPT TO: <").append(victimMail).append(">\r\n");
+        }
+           return victims.toString();
+
+       } else {
+           victims.append("To: ");
+           for(String victimMail : victim ){
+              victims.append(victimMail).append(", ");
+           }
+           victims.append("\r\n");
+           return victims.toString();
+
+       }
     }
 
 
     String data( Message message) throws UnsupportedEncodingException {
         return String.format(
-                "Date: %s\n" +
-                "Subject: %s\n" +
-                "\n" +
+                "Content-Type: text/plain; charset=utf-8 \r\n" +
+                "Date: %s\r\n" +
+                "Subject: =?utf-8?B?" +
+                "%s"
+                + "?= \r\n" +
+                "\r\n" +
                 "%s\r\n" +
-                //alors ici le MimeUtility.encodeText permet d'encoder le sujet et le body en UTF-8 pour le mail sur le serveur
-                //mais du coup dans le terminal ça n'affiche pas bien les messages
-                // Rectification... ça fait quand meme de la merde...
-                ".\r\n", java.time.LocalDateTime.now().toString(),MimeUtility.encodeText( message.getSubject(), "UTF-8", "B"), message.getBody()/*MimeUtility.encodeText(message.getBody(), "UTF-8", "B")*/);
+                ".\r\n", java.time.LocalDateTime.now().toString(), Base64.getEncoder().encodeToString(message.getSubject().getBytes()), message.getBody());
     }
 }
