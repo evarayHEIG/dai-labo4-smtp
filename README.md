@@ -8,16 +8,17 @@ first need to have docker installed on your computer. Then you need to run the f
 go to the following address: `http://localhost:1080/` to see the mails that have been sent.
 - [ ] refaire createGroups
 - [x] Arguments ligne de commande pour nombre de groupe 
-- [ ] Solve paths....
+- [x] Solve paths....
 - [ ] classe group
 - [ ] rename mailGroup into groupGenerator
-- [ ] There must be at least a simple validation process of the input files that displays errors on the console to describe what's wrong (e.g. an invalid number of groups, an invalid e-mail address that does not contain a '@' character, an invalid format, etc.).
-- [ ] Check: nb group, address format, messages format (body and messages), fichiers vides
-- [ ] Erreur si sujet ou corps vide a cause des regex et si y a pas de mail. -> Exception
+- [x] There must be at least a simple validation process of the input files that displays errors on the console to describe what's wrong (e.g. an invalid number of groups, an invalid e-mail address that does not contain a '@' character, an invalid format, etc.).
+- [x] Check: nb group, address format, messages format (body and messages), fichiers vides
+- [x] Erreur si sujet ou corps vide a cause des regex et si y a pas de mail. -> Exception
 - [ ] Check erreur du serveur -> les gerer
 - [x] Mettre un nombre de groupe par défaut si aucun provided par user (ABANDONED)
 - [ ] Checker si les fichiers de config sont bien la
 - [ ] Readme
+- [ ] Check at least two adresses
 - [x] ...
 ## Diagramme de classe
 
