@@ -26,17 +26,11 @@ public class Client {
     Iterator<ArrayList<String>> it = groups.iterator();
 
 
-    public static void main(String[] args) {
-        // Create a new client and run it
-        Client client = new Client();
-        client.run();
-    }
+
+    private void run(int nbGroups) {
 
 
-    private void run() {
-
-
-        while(it.hasNext()) {
+        while (it.hasNext()) {
 
             ArrayList<String> group = it.next();
             String sender = group.get(0);
@@ -86,7 +80,7 @@ public class Client {
                 out.flush();
 
                 //To
-                System.out.println("Client : " + mailContent.mailTo(victims, false) );
+                System.out.println("Client : " + mailContent.mailTo(victims, false));
                 out.write(mailContent.mailTo(victims, false));
                 out.flush();
 
@@ -100,11 +94,11 @@ public class Client {
                 System.out.println("Server: " + serverMessage);
 
                 //QUIT
-                 System.out.println("Client: " + "QUIT" + EOL);
-                 out.write("QUIT" + EOL);
-                 out.flush();
-                 serverMessage = in.readLine();
-                 System.out.println("Server: " + serverMessage);
+                System.out.println("Client: " + "QUIT" + EOL);
+                out.write("QUIT" + EOL);
+                out.flush();
+                serverMessage = in.readLine();
+                System.out.println("Server: " + serverMessage);
 
 
             } catch (IOException e) {
