@@ -6,29 +6,44 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Client {
+
     final String SERVER_ADDRESS = "localhost";
     final int SERVER_PORT = 1025;
 
     String address = "C:\\Users\\rafae\\Desktop\\configLaboSMTP\\address.utf8";
     String messages = "C:\\Users\\rafae\\Desktop\\configLaboSMTP\\messages.utf8";
-    FileManager mail = new FileManager(address, messages);
-    ArrayList<String> victimes = mail.getVictims();
-    ArrayList<Message> listMessage = mail.getMessage();
-    MailContent mailContent = new MailContent();
 
     final String EOL = "\r\n";
     final String DOMAIN = "trololol.com";
-    Random random = new Random();
 
-    final int NMBRGROUPE = 5;
 
-    ArrayList<ArrayList<String>> groups = MailGroup.createGroups(NMBRGROUPE, victimes);
-    Iterator<ArrayList<String>> it = groups.iterator();
+    public static void main(String[] args) {
+        // Create a new client and run it
 
+        final int nbGroups;
+
+        try {
+           nbGroups = Integer.parseInt(args[0]);
+        } catch (Exception e) {
+            System.out.println("Please enter a valid number of groups.");
+            return;
+        }
+
+        Client client = new Client();
+
+        client.run(nbGroups);
+    }
 
 
     private void run(int nbGroups) {
 
+        FileManager mail = new FileManager(address, messages);
+        ArrayList<String> victimes = mail.getVictims();
+        ArrayList<Message> listMessage = mail.getMessage();
+        MailContent mailContent = new MailContent();
+        Random random = new Random();
+        ArrayList<ArrayList<String>> groups = MailGroup.createGroups(nbGroups, victimes);
+        Iterator<ArrayList<String>> it = groups.iterator();
 
         while (it.hasNext()) {
 
