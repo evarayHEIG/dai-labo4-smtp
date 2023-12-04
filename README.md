@@ -9,7 +9,7 @@ go to the following address: `http://localhost:1080/` to see the mails that have
 
 ## To-do
 
-- [ ] refaire createGroups
+- [x] refaire createGroups
 - [x] Arguments ligne de commande pour nombre de groupe 
 - [x] Solve paths....
 - [x] classe group
@@ -58,6 +58,14 @@ classDiagram
     
     class GroupGenerator {
         +ArrayList<String> createGroup(int groupSize, ArrayList<String> victims)
+    }
+    
+    class Group {
+        -String sender
+        -ArrayList<String> victims
+        +Group(ArrayList<String> people)
+        +String getSender()
+        +ArrayList<String> getVictims()
     }
     
     class MailContent {
