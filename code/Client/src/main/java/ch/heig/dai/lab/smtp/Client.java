@@ -38,11 +38,11 @@ public class Client {
         try {
 
             FileManager mail = new FileManager(address, messages);
-            ArrayList<String> victims = mail.getVictims();
+            // ArrayList<String> victims = mail.getVictims();
             ArrayList<Message> messages = mail.getMessage();
             MailContent mailContent = new MailContent();
             Random random = new Random();
-            ArrayList<Group> groups = MailGroup.createGroups(nbGroups, victims);
+            ArrayList<Group> groups = GroupGenerator.createGroups(nbGroups, mail.getVictims());
             Iterator<Group> it = groups.iterator();
 
             // We send a prank message to each group
