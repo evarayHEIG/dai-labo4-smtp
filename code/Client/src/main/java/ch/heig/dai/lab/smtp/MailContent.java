@@ -1,6 +1,6 @@
 package ch.heig.dai.lab.smtp;
 
-import javax.mail.internet.MimeUtility;
+// import javax.mail.internet.MimeUtility;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.List;
@@ -54,7 +54,7 @@ public class MailContent {
            for(String victimMail : victim ){
               victims.append(victimMail).append(", ");
            }
-           victims.append("\r\n");
+           // victims.append("\r\n");
            return victims.toString();
 
        }
@@ -70,6 +70,6 @@ public class MailContent {
                 + "?= \r\n" +
                 "\r\n" +
                 "%s\r\n" +
-                ".\r\n", java.time.LocalDateTime.now().toString(), Base64.getEncoder().encodeToString(message.getSubject().getBytes()), message.getBody());
+                ".", java.time.LocalDateTime.now().toString(), Base64.getEncoder().encodeToString(message.getSubject().getBytes()), message.getBody());
     }
 }

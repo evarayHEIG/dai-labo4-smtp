@@ -5,8 +5,6 @@ import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-//import javafx.util.Pair;
-
 public class FileManager {
 
     private final File address;
@@ -18,8 +16,15 @@ public class FileManager {
         message = new File(pathMessagesFile);
     }
 
+    /**
+     * Get the victims from the address file
+     *
+     * @return an ArrayList of victims
+     * @throws IOException if the file is empty or if the email address doesn't match the requested format
+     */
     public ArrayList<String> getVictims() throws IOException {
 
+        // If the file is empty, throw an exception
         if (address.length() < 2) {
 
             throw new IOException("Address file must contain at least two email adresses.");
@@ -33,6 +38,7 @@ public class FileManager {
 
             while ((currentVictim = reader.readLine()) != null) {
 
+                // If the email address doesn't match the requested format, throw an exception
                 if (!currentVictim.matches(emailRegex)) {
 
                     throw new IOException("One or more email address don't match the requested format.");
@@ -49,27 +55,32 @@ public class FileManager {
         return null;
     }
 
+    /**
+     * Get the messages from the messages file
+     * @return an ArrayList containing all the messages
+     * @throws IOException if the file is empty, if the headers "subject" or "body" are missing or if
+     * the subject or the body of one of the messages is empty.
+     */
     ArrayList<Message> getMessage() throws IOException {
 
-
+        // If the file is empty, throw an exception
         if (message.length() == 0) {
 
             throw new IOException("Messages file provided is empty.");
         }
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(message), StandardCharsets.UTF_8))) {
-            //TODO: voir si y'a pas un moyen de faire ça plus proprement
+
             ArrayList<Message> messagesContent = new ArrayList<>();
             String currentMessage;
             String[] temp = {"", ""};
-            Message newMessage = null;
 
             while ((currentMessage = reader.readLine()) != null) {
-
 
                 if (currentMessage.contains("subject")) {
                     String[] split = currentMessage.split("\"subject\":");
 
+                    // If the subject is empty, throw an exception
                     if(split.length < 2){
 
                         throw new IOException("The subject of one of the messages is empty.");
@@ -80,6 +91,7 @@ public class FileManager {
                 } else if (currentMessage.contains("body")) {
                     String[] split = currentMessage.split("\"body\":");
 
+                    // If the body is empty, throw an exception
                     if(split.length < 2){
 
                         throw new IOException("The body of one of the messages is empty.");
@@ -87,30 +99,22 @@ public class FileManager {
 
                     temp[1] = split[1];
 
-                    newMessage = new Message(temp[0].replaceAll("^ \"|\",", ""), temp[1].replace("\"", ""));
-                    messagesContent.add(newMessage);
+                    messagesContent.add(new Message(temp[0].replaceAll("^ \"|\",", ""), temp[1].replace("\"", "")));
 
                 }
-
-                    /*if(newMessage.getBody() == null || newMessage.getSubject() == null){
-
-                        throw new IOException("The messages config file must match the Json format presented in the README.");
-                    }*/
-
-
             }
 
 
             for(Message message : messagesContent){
 
+                // If the subject or the body is missing, throw an exception
                 if(message.getSubject().isEmpty() || message.getBody().isEmpty()){
 
-                    throw new IOException("The headers subject and body must be present.");
+                    throw new IOException("The headers \"subject\" and \"body\" must be present.");
                 }
             }
 
             return messagesContent;
-
 
         } catch (FileNotFoundException e) {
             System.err.println("Exception while reading file: " + e.getMessage());
@@ -120,7 +124,7 @@ public class FileManager {
         return null;
     }
 
-    public static void main(String... args) {
+    /*public static void main(String... args) {
 
         String currentDirectory = FileManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         System.out.println("The current working directory is " + currentDirectory);
@@ -146,5 +150,5 @@ public class FileManager {
 
         }
 
-    }
+    }*/
 }

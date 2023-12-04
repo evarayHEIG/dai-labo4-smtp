@@ -10,35 +10,27 @@ public class Client {
     final String SERVER_ADDRESS = "localhost";
     final int SERVER_PORT = 1025;
 
-    String address = "C:\\Users\\rafae\\Desktop\\configLaboSMTP\\address.utf8";
-    String messages = "C:\\Users\\rafae\\Desktop\\configLaboSMTP\\messages.utf8";
+    String address = "./code/Client/config/address.utf8";
+    String messages = "./code/Client/config/messages.utf8";
 
     final String EOL = "\r\n";
     final String DOMAIN = "trololol.com";
 
 
-
-
     public static void main(String[] args) {
-        // Create a new client and run it
 
         final int nbGroups;
 
-
         try {
-           nbGroups = Integer.parseInt(args[0]);
+            nbGroups = Integer.parseInt(args[0]);
         } catch (Exception e) {
             System.err.println("Please enter a valid number of groups.");
             return;
         }
 
+        // Create a new client and run it
         Client client = new Client();
-
         client.run(nbGroups);
-    }
-
-    private void validation(){
-        //
     }
 
     private void run(int nbGroups) {
@@ -46,81 +38,71 @@ public class Client {
         try {
 
             FileManager mail = new FileManager(address, messages);
-            ArrayList<String> victimes = mail.getVictims();
-            ArrayList<Message> listMessage = mail.getMessage();
+            ArrayList<String> victims = mail.getVictims();
+            ArrayList<Message> messages = mail.getMessage();
             MailContent mailContent = new MailContent();
             Random random = new Random();
-            ArrayList<ArrayList<String>> groups = MailGroup.createGroups(nbGroups, victimes);
+            ArrayList<ArrayList<String>> groups = MailGroup.createGroups(nbGroups, victims);
             Iterator<ArrayList<String>> it = groups.iterator();
 
+            // We send a prank message to each group
             while (it.hasNext()) {
 
                 ArrayList<String> group = it.next();
                 String sender = group.get(0);
-                List<String> victims = group.subList(1, group.size());
+                List<String> currentVictims = group.subList(1, group.size());
 
                 try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
                      var in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
                      var out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8))) {
 
                     // Read the welcome message from the server
-
-
                     String serverMessage = in.readLine();
                     System.out.println("Server: " + serverMessage);
                     System.out.println("Client: " + mailContent.hello(DOMAIN) + EOL);
-                    out.write(mailContent.hello(DOMAIN) + EOL);
-                    out.flush();
+                    sendMessageToServer(out, mailContent.hello(DOMAIN));
                     do {
-                        serverMessage = in.readLine();
+                        serverMessage = getServerMessage(in);
                         System.out.println("Server: " + serverMessage);
 
                     } while (serverMessage.contains("250-"));
 
                     //MAIL_FROM
                     System.out.println("Client: " + mailContent.mailFrom(sender, true) + EOL);
-                    out.write(mailContent.mailFrom(sender, true) + EOL);
-                    out.flush();
+                    sendMessageToServer(out, mailContent.mailFrom(sender, true));
 
                     //MAIL_TO
-                    serverMessage = in.readLine();
+                    serverMessage = getServerMessage(in);
                     System.out.println("Server: " + serverMessage);
-                    System.out.println("Client : " + mailContent.mailTo(victims, true));
-                    out.write(mailContent.mailTo(victims, true));
-                    out.flush();
-
+                    System.out.println("Client : " + mailContent.mailTo(currentVictims, true));
+                    sendMessageToServer(out, mailContent.mailTo(currentVictims, true));
 
                     //Data
-                    serverMessage = in.readLine();
+                    serverMessage = getServerMessage(in);
                     System.out.println("Server: " + serverMessage);
                     System.out.println("Client: " + "DATA" + EOL);
-                    out.write("DATA" + EOL);
-                    out.flush();
+                    sendMessageToServer(out, "DATA");
 
                     //From
                     System.out.println("Client: " + mailContent.mailFrom(sender, false) + EOL);
-                    out.write(mailContent.mailFrom(sender, false) + EOL);
-                    out.flush();
+                    sendMessageToServer(out, mailContent.mailFrom(sender, false));
 
                     //To
-                    System.out.println("Client : " + mailContent.mailTo(victims, false));
-                    out.write(mailContent.mailTo(victims, false));
-                    out.flush();
-
+                    System.out.println("Client : " + mailContent.mailTo(currentVictims, false));
+                    sendMessageToServer(out, mailContent.mailTo(currentVictims, false));
 
                     //ici pas besoin de mettre le EOL car il est déjà dans la fonction data (voir si on change ça)
                     //Date + sujet + message + .
-                    System.out.println("Client: " + mailContent.data(listMessage.get(random.nextInt(listMessage.size() - 1))));
-                    out.write(mailContent.data(listMessage.get(random.nextInt(listMessage.size() - 1))));
-                    out.flush();
-                    serverMessage = in.readLine();
+                    System.out.println("Client: " + mailContent.data(messages.get(random.nextInt(messages.size() - 1))));
+                    // Choose a random message to send
+                    sendMessageToServer(out, mailContent.data(messages.get(random.nextInt(messages.size() - 1))));
+                    serverMessage = getServerMessage(in);
                     System.out.println("Server: " + serverMessage);
 
                     //QUIT
                     System.out.println("Client: " + "QUIT" + EOL);
-                    out.write("QUIT" + EOL);
-                    out.flush();
-                    serverMessage = in.readLine();
+                    sendMessageToServer(out, "QUIT");
+                    serverMessage = getServerMessage(in);
                     System.out.println("Server: " + serverMessage);
 
 
@@ -130,8 +112,26 @@ public class Client {
             }
         } catch (Exception e){
 
-            System.err.println("Exception in run: " + e.getMessage());
+            System.err.println("Exception in Client: " + e.getMessage());
         }
+    }
+
+    private String getServerMessage(BufferedReader in) throws IOException{
+
+        String serverMessage = in.readLine();
+
+        if(!serverMessage.startsWith("250")){
+
+            throw new IOException("Server error: " + serverMessage);
+        }
+
+        return serverMessage;
+    }
+
+    private void sendMessageToServer(BufferedWriter out, String message) throws IOException{
+
+        out.write(message + EOL);
+        out.flush();
     }
 
 }

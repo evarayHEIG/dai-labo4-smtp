@@ -27,7 +27,7 @@ public class Message {
     }
     @Override
     public  String toString() {
-        return String.format("Subject: %s \nbody: %s",subject, body);
+        return "Subject: " + subject + "\n" + "Body: " + body;
     }
 
 
