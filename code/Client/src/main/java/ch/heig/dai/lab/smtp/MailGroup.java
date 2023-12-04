@@ -8,29 +8,27 @@ import java.util.Random;
 public class MailGroup {
 
     // 2-5 victimes par groupe
-    static public ArrayList<ArrayList<String>> createGroups(int nbGroup, ArrayList<String> victims)  {
+    static public ArrayList<Group> createGroups(int nbGroup, ArrayList<String> victims)  {
 
-        ArrayList<ArrayList<String>> groups = new ArrayList<>(nbGroup);
+        ArrayList<Group> groups = new ArrayList<>(nbGroup);
         ArrayList<String> remainingVictims = new ArrayList<>(victims);
         Collections.shuffle(remainingVictims);
         int currentNbGroups = 0;
-
-        for(int i = 0; i < nbGroup; i++){
-
-            groups.add(new ArrayList<>());
-        }
 
         Random random = new Random();
 
         while(currentNbGroups < nbGroup && !remainingVictims.isEmpty()) {
 
+            ArrayList<String> currentPeople = new ArrayList<>();
 
             int nbVictims = 2 + random.nextInt(3);
 
             for (int j = 0; j < nbVictims; j++) {
 
-                groups.get(currentNbGroups).add(remainingVictims.removeFirst());
+                currentPeople.add(remainingVictims.remove(0));
             }
+
+            groups.add(new Group(currentPeople));
             currentNbGroups++;
         }
 

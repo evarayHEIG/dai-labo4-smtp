@@ -42,15 +42,15 @@ public class Client {
             ArrayList<Message> messages = mail.getMessage();
             MailContent mailContent = new MailContent();
             Random random = new Random();
-            ArrayList<ArrayList<String>> groups = MailGroup.createGroups(nbGroups, victims);
-            Iterator<ArrayList<String>> it = groups.iterator();
+            ArrayList<Group> groups = MailGroup.createGroups(nbGroups, victims);
+            Iterator<Group> it = groups.iterator();
 
             // We send a prank message to each group
             while (it.hasNext()) {
 
-                ArrayList<String> group = it.next();
-                String sender = group.get(0);
-                List<String> currentVictims = group.subList(1, group.size());
+                Group group = it.next();
+                String sender = group.getSender();
+                List<String> currentVictims = group.getVictims();
 
                 try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
                      var in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
