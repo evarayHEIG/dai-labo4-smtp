@@ -161,7 +161,7 @@ classDiagram
 
     GroupGenerator "1" -- "*" Group: generates
     FileManager "1" -- "*" Message: reads
-    Client "*" -- "*" Message: sends
+    Client "1" -- "*" Message: sends
     Client "1" -- "*" Group: pranks
 
 ```
@@ -188,7 +188,7 @@ After that, I build the application using Maven.
 
 ![Maven build](./images/mvn_build.png "Maven build")
 
-I run it and I asks to create 5 victim groups.
+I run it and I ask the application to create 5 victim groups.
 
 ![Application running](./images/run.png "Application running")
 
