@@ -5,6 +5,12 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+/**
+ * This class represents a client that will send prank messages to a list of victims,
+ * using the SMTP protocol.
+ * @author Eva Ray
+ * @author Rafael Dousse
+ */
 public class Client {
 
     final static String SERVER_ADDRESS = "localhost";
@@ -16,6 +22,11 @@ public class Client {
     ArrayList<Message> messages;
     ArrayList<Group> groups;
 
+    /**
+     * Main method of the client
+     *
+     * @param args The arguments of the program given in command line
+     */
     public static void main(String[] args) {
 
         final int nbGroups;
@@ -37,6 +48,11 @@ public class Client {
         client.run(nbGroups);
     }
 
+    /**
+     * Execute the prank campaign using the SMTP protocol
+     *
+     * @param nbGroups The number of victim groups to prank
+     */
     private void run(int nbGroups) {
 
         try {
@@ -118,6 +134,13 @@ public class Client {
         }
     }
 
+    /**
+     * Retrieve the server message and checks if it indicates an error
+     *
+     * @param in The input stream
+     * @return The server message
+     * @throws IOException If the server message indicates an error
+     */
     private String getServerMessage(BufferedReader in) throws IOException{
 
         String serverMessage = in.readLine();
@@ -129,6 +152,13 @@ public class Client {
         return serverMessage;
     }
 
+    /**
+     * Send a message to the server
+     *
+     * @param out The output stream
+     * @param message The message to send
+     * @throws IOException If an error occurs while sending the message
+     */
     private void sendMessageToServer(BufferedWriter out, String message) throws IOException{
 
         out.write(message + EOL);

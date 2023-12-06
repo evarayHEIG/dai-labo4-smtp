@@ -5,12 +5,23 @@ import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+/**
+ * This class is used to read the address and messages configuration files
+ * @author Eva Ray
+ * @author Rafael Dousse
+ */
 public class FileManager {
 
     private final File address;
     private final File message;
 
 
+    /**
+     * Create a new FileManager with the given address and messages files
+     *
+     * @param pathAddressFile  The path to the address file
+     * @param pathMessagesFile The path to the messages file
+     */
     public FileManager(String pathAddressFile, String pathMessagesFile) {
         address = new File(pathAddressFile);
         message = new File(pathMessagesFile);
@@ -57,6 +68,7 @@ public class FileManager {
 
     /**
      * Get the messages from the messages file
+     *
      * @return an ArrayList containing all the messages
      * @throws IOException if the file is empty, if the headers "subject" or "body" are missing or if
      * the subject or the body of one of the messages is empty.

@@ -5,11 +5,17 @@ import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * This class is used to create the content of SMTP messages
+ * @author Eva Ray
+ * @author Rafael Dousse
+ */
 public class MailContent {
 
     /**
      * Creates the SMTP EHLO message
-     * @param domain
+     *
+     * @param domain the domain of the SMTP server
      * @return string containing the SMTP EHLO message
      */
     public String hello(String domain) {
@@ -18,6 +24,7 @@ public class MailContent {
 
     /**
      * Creates the SMTP MAIL FROM message or the From part of the mail
+     *
      * @param sender    the sender's email
      * @param isMailFrom true if you want to send MAIL FROM or false if you want to send From
      * @return string containing the SMTP MAIL FROM message or the From part of the mail
@@ -28,6 +35,7 @@ public class MailContent {
 
     /**
      * Creates the SMTP RCPT TO message or the To part of the mail
+     *
      * @param victimList  the victims email list
      * @param isRcptTo true if you want to send RCTP TO or false if you want to send To
      * @return string containing the SMTP RCPT TO message or the To part of the mail
@@ -65,6 +73,7 @@ public class MailContent {
 
     /**
      * Creates an SMTP message containing the date, subject and body of the message.
+     *
      * @param message the message to send
      * @return string containing the date, subject and body of the message and ends with a dot.
      * @throws UnsupportedEncodingException when the encoding provided is not supported

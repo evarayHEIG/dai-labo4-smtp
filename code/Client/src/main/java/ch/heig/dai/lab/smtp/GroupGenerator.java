@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+/**
+ * This class is used to generate groups of victims
+ * @author Eva Ray
+ * @author Rafael Dousse
+ */
 public class GroupGenerator {
 
     /**
-     * Create a list of groups with the given number of groups and victims
+     * Create the given number of groups of victims
      *
      * @param nbGroup The number of groups to create
-     * @param victims The list of victims
+     * @param victims The list of victims, represented by their email address
      * @return The list of groups created
      */
     static public ArrayList<Group> createGroups(int nbGroup, ArrayList<String> victims) {
