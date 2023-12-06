@@ -34,7 +34,7 @@ following address: `http://localhost:1080/` to see the emails that have been sen
 ### Configuration files
 
 In order to run a prank campaign, you have to provide the application with some configuration files. These files
-must be stocked in the ```config``` folder in the directorx ```Client```
+must be stocked in the ```config``` folder situated inside the directory ```Client```
 that you can find at the root of the project. The application will look for the files in this
 folder. If the files are not found, the application will throw an exception and stop. It is important to note that the
 application uses a ```UTF-8``` encoding. The files needed are the following:
@@ -43,7 +43,7 @@ application uses a ```UTF-8``` encoding. The files needed are the following:
 
 This file contains the list of victims that will be used to create the victim groups.
 It is called ```address.utf8```. There must be only one address per line
-and the address must be in the following format: ```<local-part>@<domain>```. The address file must contain at least 2
+and the address must be in the following format: ```<name>@<domain>```. The address file must contain at least 2
 addresses to be valid. An example address configuration file is provided.
 
 #### message configuration file
@@ -68,7 +68,8 @@ The different messages are separated by a comma. You can see an example message 
 ### Run the application
 
 The project is built using Maven, that you will have to install on your computer beforehand.
-To run the application, you need to run the following commands in the ```Client``` directory, where the ```pom.xml``` file
+To run the application, you need to run the following commands in the ```Client``` directory, where the ```pom.xml```
+file
 is located.
 
 ```shell
@@ -79,11 +80,10 @@ java -jar .\Client\target\client-1.0.jar <number of groups>
 
 The first command will build the project and the second one will run the application. The number of groups is an
 argument that allows you to specify the number of victim groups that will be created. If you don't provide this
-argument, the
-application won't run. The number of groups must be greater than 0.
+argument, the application won't run. The number of groups must be greater than 0.
+Note that if you are working on Linux, the backslashes must be replaced by slashes in the path of the configuration files
 
 Once you run the application, the prank messages will be sent to the victims using the mock SMTP server.
-
 
 ## Implementation
 
@@ -94,88 +94,88 @@ Once you run the application, the prank messages will be sent to the victims usi
 title: SMTP Client Application
 ---
 classDiagram
-class FileManager {
--address: File
--message: File
-+FileManager(pathAddressFile: String, pathMessagesFile: String)
-+getVictims(): ArrayList<String>
-+getMessage(): ArrayList<Message>
-}
+    class FileManager {
+        -address: File
+        -message: File
+        +FileManager(pathAddressFile: String, pathMessagesFile: String)
+        +getVictims(): ArrayList<String>
+        +getMessage(): ArrayList<Message>
+    }
 
-class Message {
--subject: String
--body: String
-+subject(): String
-+body(): String
-}
+    class Message {
+        -subject: String
+        -body: String
+        +subject(): String
+        +body(): String
+    }
 
-class Client {
--SERVER_ADDRESS: String$
--SERVER_PORT: int$
--ADDRESS_PATH: String$
--MESSAGES_PATH: String$
--EOL: String$
--DOMAIN: String$
-+void main(args: String[])$
--run(nbGroups: int): void
--getServerMessage(in: BufferedReader): String
--sendMessageServer(out: BufferedWriter, message: String): void
-}
+    class Client {
+        -SERVER_ADDRESS: String$
+        -SERVER_PORT: int$
+        -ADDRESS_PATH: String$
+        -MESSAGES_PATH: String$
+        -EOL: String$
+        -DOMAIN: String$
+        +void main(args: String[])$
+        -run(nbGroups: int): void
+        -getServerMessage(in: BufferedReader): String
+        -sendMessageServer(out: BufferedWriter, message: String): void
+    }
 
-class GroupGenerator {
-+createGroup(nbGroup: int, victims: ArrayList<String>): ArrayList<Group>$
-}
+    class GroupGenerator {
+        +createGroup(nbGroup: int, victims: ArrayList<String>): ArrayList<Group>$
+    }
 
-class Group {
--sender: String
--victimes: ArrayList<String>
-+Group(people: ArrayList<String>)
-+getSender(): String
-+getVictims(): ArrayList<String>
-}
+    class Group {
+        -sender: String
+        -victimes: ArrayList<String>
+        +Group(people: ArrayList<String>)
+        +getSender(): String
+        +getVictims(): ArrayList<String>
+    }
 
-class MailContent {
-+hello(domain: String): String
-+mailFrom(sender: String, isMailFrom: boolean): String
-+rcptTo(receiver: String, isRcptTo: boolean): String
-+data(message: Message): String
-}
+    class MailContent {
+        +hello(domain: String): String
+        +mailFrom(sender: String, isMailFrom: boolean): String
+        +rcptTo(receiver: String, isRcptTo: boolean): String
+        +data(message: Message): String
+    }
 
-FileManager "1" -- "*" Message: reads
-Client "1" -- "*" Message: sends
-Client "1" -- "*" Group: pranks
+    FileManager "1" -- "*" Message: reads
+    Client "1" -- "*" Message: sends
+    Client "1" -- "*" Group: pranks
 
 ```
 
 ### Class description
 
 - ```Client```: This class is the main class of the application. It is used to create a connection with the mock SMTP
-server and
-launching the prank campaign.
+  server and
+  launching the prank campaign.
 - ```FileManager```: This class is responsible for reading the configuration files and returning the data to the
-application.
-- ```Message```: This record represents a message that will be sent to the victims. A message is represented by a subject
-and a body.
+  application.
+- ```Message```: This record represents a message that will be sent to the victims. A message is represented by a
+  subject
+  and a body.
 - ```MailContent```: This class is responsible for creating the SMTP messages that the client will send to the server.
 - ```Group```: This class represents a group of victims. A group is represented by a sender and a list of victims.
 - ```GroupGenerator```: This class is responsible for creating the groups of victims for the prank campaign.
 
 ## Prank campaign example step-by-step
 
-Having already downloaded the docker image of the mock SMTP server, I can run the server.
+After downloading the docker image of the mock SMTP server, you can run the server.
 
 <img src="./images/server_running.png" alt="Server running" style="width:800px;"/>
 
-
-After that, I build the application using Maven.
+When it starts running, the application can be built using Maven.
 
 <img src="./images/mvn_build.png" alt="Maven build" style="width:800px;"/>
 
-I run it and I ask the application to create 5 victim groups.
+For example, you can run the application and give the indication to create 5 victim groups.
 
 <img src="./images/run.png" alt="Application running" style="width:800px;"/>
 
-In the terminal, you can see the message exchanged between the client and the SMTP server, which should look like this.
+In the terminal, you can see the messages exchanged between the client and the SMTP server, which should look like this.
 
 ```shell
 Server: 220 b7a2d29e9389 ESMTP
@@ -206,7 +206,7 @@ Client: QUIT
 Server: 221 Bye
 ```
 
-I open my browser and go to the address ```http://localhost:1080/``` to see the emails that have been sent to the
+Open your browser and go to the address ```http://localhost:1080/``` to see the emails that have been sent to the
 server.
 
 <img src="./images/emails_received.png" alt="Emails received" style="width:800px;"/>
