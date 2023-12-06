@@ -89,7 +89,7 @@ public class MailContent {
                         "%s\r\n" +
                         ".",
                 java.time.LocalDateTime.now(),
-                Base64.getEncoder().encodeToString(message.getSubject().getBytes()),
-                message.getBody());
+                Base64.getEncoder().encodeToString(message.subject().getBytes()),
+                message.body());
     }
 }

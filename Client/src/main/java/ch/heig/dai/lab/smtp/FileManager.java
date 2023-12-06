@@ -119,7 +119,7 @@ public class FileManager {
             for(Message message : messagesContent){
 
                 // If the subject or the body is missing, throw an exception
-                if(message.getSubject().isEmpty() || message.getBody().isEmpty()){
+                if(message.subject().isEmpty() || message.body().isEmpty()){
 
                     throw new IOException("The headers \"subject\" and \"body\" must be present, in this order.");
                 }
