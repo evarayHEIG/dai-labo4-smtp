@@ -1,7 +1,5 @@
 package ch.heig.dai.lab.smtp;
 
-// import javax.mail.internet.MimeUtility;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.Iterator;
@@ -9,45 +7,41 @@ import java.util.List;
 
 public class MailContent {
 
-    //Pas sure que ce soit nécessaire
-    // private final String DOMAIN;
-
-    public MailContent(/*String domain*/) {
-        /*this.DOMAIN = domain;*/
-    }
-
-    String hello(String DOMAIN) {
-        return "EHLO " + DOMAIN;
+    /**
+     * Creates the SMTP EHLO message
+     * @param domain
+     * @return string containing the SMTP EHLO message
+     */
+    public String hello(String domain) {
+        return "EHLO " + domain;
     }
 
     /**
-     * Used to send the mail to the victim
-     *
-     * @param sender    the victim's mail
-     * @param MAIL_FROM true if you want to send MAIL FROM or false if you want to send From
-     * @return the string to send to the server
+     * Creates the SMTP MAIL FROM message or the From part of the mail
+     * @param sender    the sender's email
+     * @param isMailFrom true if you want to send MAIL FROM or false if you want to send From
+     * @return string containing the SMTP MAIL FROM message or the From part of the mail
      */
-    String mailFrom(String sender, boolean MAIL_FROM) {
-        return MAIL_FROM ? "MAIL FROM: <" + sender + ">" : "From: " + sender;
+    public String mailFrom(String sender, boolean isMailFrom) {
+        return isMailFrom ? "MAIL FROM: <" + sender + ">" : "From: " + sender;
     }
 
     /**
-     * Used to send the mail to the victim
-     *
-     * @param victim  the victim's mail
-     * @param RCPT_TO true if you want to send RCTP TO or false if you want to send To
-     * @return the string to send to the server
+     * Creates the SMTP RCPT TO message or the To part of the mail
+     * @param victimList  the victims email list
+     * @param isRcptTo true if you want to send RCTP TO or false if you want to send To
+     * @return string containing the SMTP RCPT TO message or the To part of the mail
      */
-    String mailTo(List<String> victim, boolean RCPT_TO) {
+    public String mailTo(List<String> victimList, boolean isRcptTo) {
 
-        if (victim.isEmpty()) {
+        if (victimList.isEmpty()) {
             throw new IllegalArgumentException("The list of victims is empty");
         }
 
         StringBuilder victims = new StringBuilder();
-        Iterator<String> it = victim.iterator();
+        Iterator<String> it = victimList.iterator();
 
-        if (RCPT_TO) {
+        if (isRcptTo) {
             while (it.hasNext()) {
                 victims.append("RCPT TO: <").append(it.next()).append(">");
                 if (it.hasNext()) {
@@ -69,7 +63,13 @@ public class MailContent {
     }
 
 
-    String data(Message message) throws UnsupportedEncodingException {
+    /**
+     * Creates an SMTP message containing the date, subject and body of the message.
+     * @param message the message to send
+     * @return string containing the date, subject and body of the message and ends with a dot.
+     * @throws UnsupportedEncodingException when the encoding provided is not supported
+     */
+    public String data(Message message) throws UnsupportedEncodingException {
         return String.format(
                 "Content-Type: text/plain; charset=utf-8 \r\n" +
                         "Date: %s\r\n" +
