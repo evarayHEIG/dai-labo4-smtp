@@ -44,7 +44,7 @@ public class FileManager {
 
             ArrayList<String> victims = new ArrayList<>();
             String currentVictim;
-            String emailRegex = "^[^@]+@[^@]+\\.[^@]+$";
+            String emailRegex = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 
             while ((currentVictim = reader.readLine()) != null) {
 

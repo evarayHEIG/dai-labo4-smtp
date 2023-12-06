@@ -37,6 +37,6 @@ public class Group {
      * @return a copy of the victims of the group
      */
     public ArrayList<String> getVictims() {
-        return victims;
+        return new ArrayList<>(victims);
     }
 }

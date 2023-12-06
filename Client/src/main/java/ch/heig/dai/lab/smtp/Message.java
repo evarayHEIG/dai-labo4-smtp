@@ -46,24 +46,6 @@ public class Message {
     }
 
     /**
-     * Set the subject of the message
-     *
-     * @param subject the new subject of the message
-     */
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    /**
-     * Set the body of the message
-     *
-     * @param body the new body of the message
-     */
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    /**
      * Give a string representation of the message
      *
      * @return the message as a string
