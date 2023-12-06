@@ -68,7 +68,7 @@ The different messages are separated by a comma. You can see an example message 
 ### Run the application
 
 The project is built using Maven, that you will have to install on your computer beforehand.
-To run the application, you need to run the following commands in the root of the project, where the ```pom.xml``` file
+To run the application, you need to run the following commands in the ```Client``` directory, where the ```pom.xml``` file
 is located.
 
 ```shell
@@ -84,24 +84,6 @@ application won't run. The number of groups must be greater than 0.
 
 Once you run the application, the prank messages will be sent to the victims using the mock SMTP server.
 
-## Prank campaign example step-by-step
-
-Having already downloaded the docker image of the mock SMTP server, I can run the server.
-
-![Server Maildev running](./images/server_running.png "Server running")
-
-After that, I build the application using Maven.
-
-![Maven build](./images/mvn_build.png "Maven build")
-
-I run it and I ask the application to create 5 victim groups.
-
-![Application running](./images/run.png "Application running")
-
-I open my browser and go to the address ```http://localhost:1080/``` to see the emails that have been sent to the
-server.
-
-![Emails received](./images/emails_received.png "Emails received")
 
 ## Implementation
 
@@ -112,71 +94,122 @@ server.
 title: SMTP Client Application
 ---
 classDiagram
-    class FileManager {
-        -address: File
-        -message: File
-        +FileManager(addressFile: String, messageFile: String)
-        +getVictims(): ArrayList<String>
-        +getMessage(): ArrayList<Message>
-    }
+class FileManager {
+-address: File
+-message: File
++FileManager(pathAddressFile: String, pathMessagesFile: String)
++getVictims(): ArrayList<String>
++getMessage(): ArrayList<Message>
+}
 
-    class Message {
-        -subject: String
-        -body: String
-        +Message(subject: String, body: String)
-        +getSubject(): String
-        +getBody(): String
-        +setSubject(String subject): void
-        +setBody(String body): void
-    }
+class Message {
+-subject: String
+-body: String
++Message(subject: String, body: String)
++getSubject(): String
++getBody(): String
++setSubject(String subject): void
++setBody(String body): void
+}
 
-    class Client {
-        -SERVER_ADDRESS: String
-        -SERVER_PORT: int
-        -address: String
-        -messages: String
-        -EOL: String
-        -DOMAIN: String
-        +void main(args: String[])
-        -run(nbGroups: int): void
-        -getServerMessage(in: BufferedReader): String
-        -sendMessageServer(out: BufferedWriter, message: String): void
-    }
+class Client {
+-SERVER_ADDRESS: String$
+-SERVER_PORT: int$
+-ADDRESS_PATH: String$
+-MESSAGES_PATH: String$
+-EOL: String$
+-DOMAIN: String$
++void main(args: String[])$
+-run(nbGroups: int): void
+-getServerMessage(in: BufferedReader): String
+-sendMessageServer(out: BufferedWriter, message: String): void
+}
 
-    class GroupGenerator {
-        +createGroup(nbGroup: int, victims: ArrayList<String>): ArrayList<Group>$
-    }
+class GroupGenerator {
++createGroup(nbGroup: int, victims: ArrayList<String>): ArrayList<Group>$
+}
 
-    class Group {
-        -sender: String
-        -victimes: ArrayList<String>
-        +Group(people: ArrayList<String>)
-        +getSender(): String
-        +getVictims(): ArrayList<String>
-    }
+class Group {
+-sender: String
+-victimes: ArrayList<String>
++Group(people: ArrayList<String>)
++getSender(): String
++getVictims(): ArrayList<String>
+}
 
-    class MailContent {
-        +hello(domain: String): String
-        +mailFrom(sender: String, boolean mailFrom): String
-        +rcptTo(receiver: String, boolean rcptTo): String
-        +data(message: Message): String
-    }
+class MailContent {
++hello(domain: String): String
++mailFrom(sender: String, isMailFrom: boolean): String
++rcptTo(receiver: String, isRcptTo: boolean): String
++data(message: Message): String
+}
 
-    FileManager "1" -- "*" Message: reads
-    Client "1" -- "*" Message: sends
-    Client "1" -- "*" Group: pranks
+FileManager "1" -- "*" Message: reads
+Client "1" -- "*" Message: sends
+Client "1" -- "*" Group: pranks
 
 ```
 
 ### Class description
 
 - ```Client```: This class is the main class of the application. It is used to create a connection with the mock SMTP
-  server and
-  launching the prank campaign.
+server and
+launching the prank campaign.
 - ```FileManager```: This class is responsible for reading the configuration files and returning the data to the
-  application.
+application.
 - ```Message```: This class represents a message that will be sent to the victims. A message is represented by a subject
-  and a body.
+and a body.
 - ```MailContent```: This class is responsible for creating the SMTP messages that the client will send to the server.
 - ```Group```: This class represents a group of victims. A group is represented by a sender and a list of victims.
 - ```GroupGenerator```: This class is responsible for creating the groups of victims for the prank campaign.
+
+## Prank campaign example step-by-step
+
+Having already downloaded the docker image of the mock SMTP server, I can run the server.
+
+<img src="./images/server_running.png" alt="Server running" style="width:800px;"/>
+
+
+After that, I build the application using Maven.
+
+<img src="./images/mvn_build.png" alt="Maven build" style="width:800px;"/>
+
+I run it and I ask the application to create 5 victim groups.
+
+<img src="./images/run.png" alt="Application running" style="width:800px;"/>
+
+In the terminal, you can see the message exchanged between the client and the SMTP server, which should look like this.
+
+```shell
+Server: 220 b7a2d29e9389 ESMTP
+Client: EHLO trololol.com
+Server: 250-b7a2d29e9389 Nice to meet you, [172.17.0.1]
+Server: 250-PIPELINING
+Server: 250-8BITMIME
+Server: 250 SMTPUTF8
+Client: MAIL FROM: <testmail@trololol.org>
+Server: 250 Accepted
+Client: RCPT TO: <exampleemail@trololol.org>
+RCPT TO: <mailbox@trololol.org>
+Server: 250 Accepted
+Server: 250 Accepted
+Client: DATA
+Server: 354 End data with <CR><LF>.<CR><LF>
+Client: From: testmail@trololol.org
+Client: To: exampleemail@trololol.org, mailbox@trololol.org
+Client: Content-Type: text/plain; charset=utf-8
+Date: 2023-12-06T21:39:28.117688900
+Subject: =?utf-8?B?Vm90cmUgY2hhbmNlIGVzdCBhcnJpdsOpZSAh?=
+
+Vous êtes le millionième visiteur de notre site ! Réclamez votre prix maintenant en
+nous envoyant vos coordonnées personnelles.
+.
+Server: 250 Message queued as bIDuyJbQ
+Client: QUIT
+Server: 221 Bye
+```
+
+I open my browser and go to the address ```http://localhost:1080/``` to see the emails that have been sent to the
+server.
+
+<img src="./images/emails_received.png" alt="Emails received" style="width:800px;"/>
