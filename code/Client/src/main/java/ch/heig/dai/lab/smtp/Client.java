@@ -7,15 +7,14 @@ import java.util.*;
 
 public class Client {
 
-    final String SERVER_ADDRESS = "localhost";
-    final int SERVER_PORT = 1025;
-
-    String address = "./code/Client/config/address.utf8";
-    String messages = "./code/Client/config/messages.utf8";
-
-    final String EOL = "\r\n";
-    final String DOMAIN = "trololol.com";
-
+    final static String SERVER_ADDRESS = "localhost";
+    final static int SERVER_PORT = 1025;
+    final static String ADDRESS_PATH = "./code/Client/config/address.utf8";
+    final static String MESSAGES_PATH = "./code/Client/config/messages.utf8";
+    final static String EOL = "\r\n";
+    final static String DOMAIN = "trololol.com";
+    ArrayList<Message> messages;
+    ArrayList<Group> groups;
 
     public static void main(String[] args) {
 
@@ -24,7 +23,12 @@ public class Client {
         try {
             nbGroups = Integer.parseInt(args[0]);
         } catch (Exception e) {
-            System.err.println("Please enter a valid number of groups.");
+            System.err.println("The number of groups must be an integer.");
+            return;
+        }
+
+        if(nbGroups <= 0){
+            System.err.println("The number of groups must be greater than 0.");
             return;
         }
 
@@ -37,12 +41,11 @@ public class Client {
 
         try {
 
-            FileManager mail = new FileManager(address, messages);
-            // ArrayList<String> victims = mail.getVictims();
-            ArrayList<Message> messages = mail.getMessage();
+            FileManager mail = new FileManager(ADDRESS_PATH, MESSAGES_PATH);
+            messages = mail.getMessage();
+            groups = GroupGenerator.createGroups(nbGroups, mail.getVictims());
             MailContent mailContent = new MailContent();
             Random random = new Random();
-            ArrayList<Group> groups = GroupGenerator.createGroups(nbGroups, mail.getVictims());
             Iterator<Group> it = groups.iterator();
 
             // We send a prank message to each group
@@ -91,11 +94,10 @@ public class Client {
                     System.out.println("Client : " + mailContent.mailTo(currentVictims, false));
                     sendMessageToServer(out, mailContent.mailTo(currentVictims, false));
 
-                    //ici pas besoin de mettre le EOL car il est déjà dans la fonction data (voir si on change ça)
                     //Date + sujet + message + .
-                    System.out.println("Client: " + mailContent.data(messages.get(random.nextInt(messages.size() - 1))));
-                    // Choose a random message to send
-                    sendMessageToServer(out, mailContent.data(messages.get(random.nextInt(messages.size() - 1))));
+                    Message currentMessage = messages.get(random.nextInt(messages.size() - 1));
+                    System.out.println("Client: " + mailContent.data(currentMessage));
+                    sendMessageToServer(out, mailContent.data(currentMessage));
                     serverMessage = getServerMessage(in);
                     System.out.println("Server: " + serverMessage);
 
@@ -121,7 +123,6 @@ public class Client {
         String serverMessage = in.readLine();
 
         if(!serverMessage.startsWith("2") && !serverMessage.startsWith("3")){
-
             throw new IOException("Server error: " + serverMessage);
         }
 
