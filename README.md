@@ -105,11 +105,8 @@ class FileManager {
 class Message {
 -subject: String
 -body: String
-+Message(subject: String, body: String)
-+getSubject(): String
-+getBody(): String
-+setSubject(String subject): void
-+setBody(String body): void
++subject(): String
++body(): String
 }
 
 class Client {
@@ -157,7 +154,7 @@ server and
 launching the prank campaign.
 - ```FileManager```: This class is responsible for reading the configuration files and returning the data to the
 application.
-- ```Message```: This class represents a message that will be sent to the victims. A message is represented by a subject
+- ```Message```: This record represents a message that will be sent to the victims. A message is represented by a subject
 and a body.
 - ```MailContent```: This class is responsible for creating the SMTP messages that the client will send to the server.
 - ```Group```: This class represents a group of victims. A group is represented by a sender and a list of victims.
