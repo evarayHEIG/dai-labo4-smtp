@@ -15,8 +15,8 @@ public class Client {
 
     final static String SERVER_ADDRESS = "localhost";
     final static int SERVER_PORT = 1025;
-    final static String ADDRESS_PATH = "./code/Client/config/address.utf8";
-    final static String MESSAGES_PATH = "./code/Client/config/messages.utf8";
+    final static String ADDRESS_PATH = "./Client/config/address.utf8";
+    final static String MESSAGES_PATH = "./Client/config/messages.utf8";
     final static String EOL = "\r\n";
     final static String DOMAIN = "trololol.com";
     ArrayList<Message> messages;

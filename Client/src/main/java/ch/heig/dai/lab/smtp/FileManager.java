@@ -1,7 +1,6 @@
 package ch.heig.dai.lab.smtp;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -73,7 +72,7 @@ public class FileManager {
      * @throws IOException if the file is empty, if the headers "subject" or "body" are missing or if
      * the subject or the body of one of the messages is empty.
      */
-    ArrayList<Message> getMessage() throws IOException {
+    public ArrayList<Message> getMessage() throws IOException {
 
         // If the file is empty, throw an exception
         if (message.length() == 0) {
@@ -135,32 +134,4 @@ public class FileManager {
 
         return null;
     }
-
-    /*public static void main(String... args) {
-
-        String currentDirectory = FileManager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        System.out.println("The current working directory is " + currentDirectory);
-        //String address = "/C:/Users/rafae/Desktop/Cours%20HEIG-VD/semestre%203/DAI/Labo/dai-labo4-smtp/code/Rafou2898_evarayHEIG/Client/config/address.utf8";
-        //String address = "C:\\Users\\rafae\\Desktop\\configLaboSMTP\\address.utf8";
-        String address = "./code/Client/config/address.utf8";
-        //String messages = "/C:/Users/rafae/Desktop/Cours%20HEIG-VD/semestre%203/DAI/Labo/dai-labo4-smtp/code/Rafou2898_evarayHEIG/Client/config/messages.utf8";
-        //String messages = "C:\\Users\\rafae\\Desktop\\configLaboSMTP\\messages.utf8";
-        String messages = "./code/Client/config/messages.utf8";
-        FileManager mail = new FileManager(address, messages);
-
-        try {
-            mail.getVictims();
-
-            ArrayList<Message> listMessage = mail.getMessage();
-
-            for (Message message : listMessage) {
-                System.out.println("-----------------");
-                System.out.println(message);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-
-        }
-
-    }*/
 }
