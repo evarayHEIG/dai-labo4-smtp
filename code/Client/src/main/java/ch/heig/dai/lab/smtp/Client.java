@@ -120,7 +120,7 @@ public class Client {
 
         String serverMessage = in.readLine();
 
-        if(!serverMessage.startsWith("250")){
+        if(!serverMessage.startsWith("2") && !serverMessage.startsWith("3")){
 
             throw new IOException("Server error: " + serverMessage);
         }

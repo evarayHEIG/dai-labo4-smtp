@@ -24,7 +24,7 @@ public class FileManager {
      */
     public ArrayList<String> getVictims() throws IOException {
 
-        // If the file is empty, throw an exception
+        // If the file has less than 2 addresses, throw an exception
         if (address.length() < 2) {
 
             throw new IOException("Address file must contain at least two email adresses.");
@@ -99,7 +99,7 @@ public class FileManager {
 
                     temp[1] = split[1];
 
-                    messagesContent.add(new Message(temp[0].replaceAll("^ \"|\",", ""), temp[1].replace("\"", "")));
+                    messagesContent.add(new Message(temp[0].replaceAll("^ \"|\",", "").trim(), temp[1].replace("\"", "").trim()));
 
                 }
             }
@@ -110,7 +110,7 @@ public class FileManager {
                 // If the subject or the body is missing, throw an exception
                 if(message.getSubject().isEmpty() || message.getBody().isEmpty()){
 
-                    throw new IOException("The headers \"subject\" and \"body\" must be present.");
+                    throw new IOException("The headers \"subject\" and \"body\" must be present, in this order.");
                 }
             }
 
