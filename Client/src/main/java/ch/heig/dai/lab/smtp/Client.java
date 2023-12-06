@@ -55,6 +55,7 @@ public class Client {
      */
     private void run(int nbGroups) {
 
+        String repeated = String.join("", Collections.nCopies(35, "----"));
         try {
 
             FileManager mail = new FileManager(ADDRESS_PATH, MESSAGES_PATH);
@@ -62,12 +63,12 @@ public class Client {
             groups = GroupGenerator.createGroups(nbGroups, mail.getVictims());
             MailContent mailContent = new MailContent();
             Random random = new Random();
-            Iterator<Group> it = groups.iterator();
 
             // We send a prank message to each group
-            while (it.hasNext()) {
+            for (Group value : groups) {
+                System.out.println(repeated);
 
-                Group group = it.next();
+                Group group = value;
                 String sender = group.getSender();
                 List<String> currentVictims = group.getVictims();
 
@@ -76,58 +77,47 @@ public class Client {
                      var out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8))) {
 
                     // Read the welcome message from the server
-                    String serverMessage = in.readLine();
-                    System.out.println("Server: " + serverMessage);
-                    System.out.println("Client: " + mailContent.hello(DOMAIN) + EOL);
+                    String serverMessage = getServerMessage(in);
                     sendMessageToServer(out, mailContent.hello(DOMAIN));
                     do {
                         serverMessage = getServerMessage(in);
-                        System.out.println("Server: " + serverMessage);
-
                     } while (serverMessage.contains("250-"));
 
                     //MAIL_FROM
-                    System.out.println("Client: " + mailContent.mailFrom(sender, true) + EOL);
                     sendMessageToServer(out, mailContent.mailFrom(sender, true));
 
                     //MAIL_TO
-                    serverMessage = getServerMessage(in);
-                    System.out.println("Server: " + serverMessage);
-                    System.out.println("Client : " + mailContent.mailTo(currentVictims, true));
+                    getServerMessage(in);
                     sendMessageToServer(out, mailContent.mailTo(currentVictims, true));
+                    for(int i = 0; i < currentVictims.size(); i++){
+                        getServerMessage(in);
+                    }
 
                     //Data
-                    serverMessage = getServerMessage(in);
-                    System.out.println("Server: " + serverMessage);
-                    System.out.println("Client: " + "DATA" + EOL);
                     sendMessageToServer(out, "DATA");
+                    getServerMessage(in);
 
                     //From
-                    System.out.println("Client: " + mailContent.mailFrom(sender, false) + EOL);
                     sendMessageToServer(out, mailContent.mailFrom(sender, false));
 
                     //To
-                    System.out.println("Client : " + mailContent.mailTo(currentVictims, false));
                     sendMessageToServer(out, mailContent.mailTo(currentVictims, false));
 
                     //Date + sujet + message + .
-                    Message currentMessage = messages.get(random.nextInt(messages.size() - 1));
-                    System.out.println("Client: " + mailContent.data(currentMessage));
-                    sendMessageToServer(out, mailContent.data(currentMessage));
-                    serverMessage = getServerMessage(in);
-                    System.out.println("Server: " + serverMessage);
+                    sendMessageToServer(out, mailContent.data(messages.get(random.nextInt(messages.size() - 1))));
+                    getServerMessage(in);
 
                     //QUIT
-                    System.out.println("Client: " + "QUIT" + EOL);
                     sendMessageToServer(out, "QUIT");
-                    serverMessage = getServerMessage(in);
-                    System.out.println("Server: " + serverMessage);
+                    getServerMessage(in);
 
 
                 } catch (IOException e) {
                     System.out.println("Client: exception while using client socket: " + e);
                 }
             }
+            System.out.println(repeated);
+
         } catch (Exception e){
 
             System.err.println("Exception in Client: " + e.getMessage());
@@ -149,6 +139,8 @@ public class Client {
             throw new IOException("Server error: " + serverMessage);
         }
 
+        System.out.println("Server: " + serverMessage);
+
         return serverMessage;
     }
 
@@ -163,6 +155,7 @@ public class Client {
 
         out.write(message + EOL);
         out.flush();
+        System.out.println("Client: " + message);
     }
 
 }
